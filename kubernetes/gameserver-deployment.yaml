@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gameserver-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gameserver-deployment
+  template:
+    metadata:
+      labels:
+        app: gameserver-deployment
+    spec:
+      containers:
+        - name: gameserver-deployment
+          image: joohuba/huba-game-server:latest
+          resources:
+            limits:
+              memory: "120Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 8090
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+          env:
+            - name: LOADBALANCER_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: gameserver-config
+                  key: LOADBALANCER_IP

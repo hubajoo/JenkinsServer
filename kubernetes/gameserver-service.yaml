@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gameserver-depl-service
+spec:
+  selector:
+    app: gameserver-deployment
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8090
